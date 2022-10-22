@@ -63,8 +63,8 @@ TYPED_TEST(LinearizationQRTest, BasicLinearAlgebraTest) {
   auto bal_problem =
       load_normalized_bal_problem_quiet<Scalar>(test_dataset_path);
 
-  typename LinearizationQR<Scalar, 9>::Options lqr_options;
-  LinearizationQR<Scalar, 9> lqr(bal_problem, lqr_options);
+  typename LinearizationQR<Scalar, 10>::Options lqr_options;
+  LinearizationQR<Scalar, 10> lqr(bal_problem, lqr_options);
   lqr.linearize_problem();
   lqr.perform_qr();
 

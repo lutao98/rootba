@@ -63,7 +63,7 @@ TYPED_TEST(BalBundleAdjustmentTest, QrScEquivalenceTest) {
       "data/rootba/test/bal-ladybug-problem-49-7776-pre-shrink-1800.txt";
 
   const Scalar damping = 1e-4;
-  constexpr int POSE_SIZE = 9;
+  constexpr int POSE_SIZE = 10;
 
   // load dataset
   auto bal_problem =

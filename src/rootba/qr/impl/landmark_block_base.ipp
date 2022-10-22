@@ -128,7 +128,8 @@ void LandmarkBlockBase<T, Scalar, POSE_SIZE>::linearize_landmark(
       const Scalar sqrt_weight = std::sqrt(weight);
 
       storage.template block<2, 6>(obs_idx, pose_idx) = sqrt_weight * Jp;
-      storage.template block<2, 3>(obs_idx, pose_idx + 6) = sqrt_weight * Ji;
+      //fx,fy,cx,cy
+      storage.template block<2, 4>(obs_idx, pose_idx + 6) = sqrt_weight * Ji;
       storage.template block<2, 3>(obs_idx, lm_idx) = sqrt_weight * Jl;
       storage.template block<2, 1>(obs_idx, res_idx) = sqrt_weight * res;
     }

@@ -37,7 +37,7 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 #include <map>
 
-#include <basalt/camera/bal_camera.hpp>
+#include <basalt/camera/pinhole_camera.hpp>
 #include <glog/logging.h>
 
 #include "rootba/bal/common_types.hpp"
@@ -63,15 +63,17 @@ class BalProblem {
  public:
   using Vec2 = Eigen::Matrix<Scalar, 2, 1>;
   using Vec3 = Eigen::Matrix<Scalar, 3, 1>;
+  using Vec4 = Eigen::Matrix<Scalar, 4, 1>;
   using Vec6 = Eigen::Matrix<Scalar, 6, 1>;
   using Vec9 = Eigen::Matrix<Scalar, 9, 1>;
   using VecX = Eigen::Matrix<Scalar, Eigen::Dynamic, 1>;
   using SE3 = Sophus::SE3<Scalar>;
   using SO3 = Sophus::SO3<Scalar>;
 
-  static constexpr int CAM_STATE_SIZE = 10;
+  // trans(3),rot(4),intrinsics(4,fx,fy,cx,cy)
+  static constexpr int CAM_STATE_SIZE = 11;
 
-  using CameraModel = basalt::BalCamera<Scalar>;
+  using CameraModel = basalt::PinholeCamera<Scalar>;
 
   struct Observation {
     Vec2 pos;
@@ -84,14 +86,14 @@ class BalProblem {
     VecX params() const {
       VecX p(CAM_STATE_SIZE);
       p.template head<7>() = T_c_w.params();
-      p.template tail<3>() = intrinsics.getParam();
+      p.template tail<4>() = intrinsics.getParam();
       return p;
     }
 
     void from_params(const VecX& p) {
       CHECK_EQ(p.size(), CAM_STATE_SIZE);
       T_c_w = Eigen::Map<const SE3>(p.data());
-      intrinsics = CameraModel(p.template tail<3>());
+      intrinsics = CameraModel(p.template tail<4>());
     }
 
     void apply_inc_pose(const Vec6& inc) { inc_pose(inc, T_c_w); }
@@ -100,11 +102,11 @@ class BalProblem {
       T_c_w = Sophus::se3_expd(inc) * T_c_w;
     }
 
-    void apply_inc_intrinsics(const Vec3& inc) {
+    void apply_inc_intrinsics(const Vec4& inc) {
       inc_intrinsics(inc, intrinsics);
     }
 
-    inline static void inc_intrinsics(const Vec3& inc, CameraModel& intr) {
+    inline static void inc_intrinsics(const Vec4& inc, CameraModel& intr) {
       intr += inc;
     }
 

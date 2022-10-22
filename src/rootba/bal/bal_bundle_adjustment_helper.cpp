@@ -111,7 +111,7 @@ void BalBundleAdjustmentHelper<Scalar>::compute_error(
 template <typename Scalar>
 bool BalBundleAdjustmentHelper<Scalar>::linearize_point(
     const Vec2& obs, const Vec3& lm_p_w, const SE3& T_c_w,
-    const basalt::BalCamera<Scalar>& intr, const bool ignore_validity_check,
+    const basalt::PinholeCamera<Scalar>& intr, const bool ignore_validity_check,
     VecR& res, MatRP* d_res_d_xi, MatRI* d_res_d_i, MatRL* d_res_d_l) {
   Mat4 T_c_w_mat = T_c_w.matrix();
 

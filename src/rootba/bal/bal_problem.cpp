@@ -254,7 +254,7 @@ void BalProblem<Scalar>::load_bal(const std::string& path) {
       auto& cam = cameras_.at(i);
       cam.T_c_w.so3() = axis_inversion * SO3::exp(params.template head<3>());
       cam.T_c_w.translation() = axis_inversion * params.template segment<3>(3);
-      cam.intrinsics = CameraModel(params.template tail<3>());
+      // cam.intrinsics = CameraModel(params.template tail<3>());
     }
 
     // parse landmark parameters
@@ -328,7 +328,7 @@ void BalProblem<Scalar>::load_bundler(const std::string& path) {
 
       // create camera object
       auto& cam = cameras_.emplace_back();
-      cam.intrinsics = CameraModel(params.template head<3>());
+      // cam.intrinsics = CameraModel(params.template head<3>());
       Eigen::Map<Eigen::Matrix<Scalar, 3, 3, Eigen::RowMajor>> R(params.data() +
                                                                  3);
       cam.T_c_w.so3() = axis_inversion * SO3(R);

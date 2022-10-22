@@ -52,7 +52,7 @@ LinearizorSC<Scalar_>::LinearizorSC(BalProblem<Scalar>& bal_problem,
                                     SolverSummary* summary)
     : LinearizorBase<Scalar>(bal_problem, options, summary) {
   // set options
-  typename LinearizationSC<Scalar, 9>::Options lsc_options;
+  typename LinearizationSC<Scalar, 10>::Options lsc_options;
 
   lsc_options.use_householder = options_.use_householder_marginalization;
   lsc_options.use_valid_projections_only =
@@ -61,7 +61,7 @@ LinearizorSC<Scalar_>::LinearizorSC(BalProblem<Scalar>& bal_problem,
   lsc_options.residual_options = options_.residual;
 
   // create linearization object
-  lsc_ = std::make_unique<LinearizationSC<Scalar, 9>>(bal_problem, lsc_options);
+  lsc_ = std::make_unique<LinearizationSC<Scalar, 10>>(bal_problem, lsc_options);
 }
 
 template <class Scalar_>
@@ -193,9 +193,9 @@ Scalar_ LinearizorSC<Scalar_>::apply(VecX&& inc) {
 
   // update cameras
   for (size_t i = 0; i < bal_problem_.cameras().size(); i++) {
-    bal_problem_.cameras()[i].apply_inc_pose(inc.template segment<6>(i * 9));
+    bal_problem_.cameras()[i].apply_inc_pose(inc.template segment<6>(i * 10));
     bal_problem_.cameras()[i].apply_inc_intrinsics(
-        inc.template segment<3>(i * 9 + 6));
+        inc.template segment<4>(i * 10 + 6));
   }
 
   return l_diff;

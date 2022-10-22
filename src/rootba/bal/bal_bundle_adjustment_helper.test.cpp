@@ -56,8 +56,10 @@ TYPED_TEST(BalBundleAdjustmentHelperTest, LinearizePoint) {
   using SE3 = Sophus::SE3<Scalar>;
   using Vec2 = Vec<Scalar, 2>;
   using Vec3 = Vec<Scalar, 3>;
+  using Vec4 = Vec<Scalar, 4>;
   using Vec6 = Vec<Scalar, 6>;
   using Mat26 = Mat<Scalar, 2, 6>;
+  using Mat24 = Mat<Scalar, 2, 4>;
   using Mat23 = Mat<Scalar, 2, 3>;
 
   // relax precision a bit (to make float tests pass)
@@ -66,8 +68,8 @@ TYPED_TEST(BalBundleAdjustmentHelperTest, LinearizePoint) {
   Vec3 lm_p_w = Vec3::Random();
   lm_p_w.z() += 10;
 
-  const basalt::BalCamera<Scalar> intr =
-      basalt::BalCamera<Scalar>::getTestProjections()[0];
+  const basalt::PinholeCamera<Scalar> intr =
+      basalt::PinholeCamera<Scalar>::getTestProjections()[0];
   const SE3 T_c_w(SO3::exp(Vec3::Random() / 100), Vec3::Random());
 
   Vec2 obs;
@@ -77,7 +79,7 @@ TYPED_TEST(BalBundleAdjustmentHelperTest, LinearizePoint) {
 
   Vec2 res;
   Mat26 d_res_d_xi;
-  Mat23 d_res_d_i;
+  Mat24 d_res_d_i;
   Mat23 d_res_d_l;
 
   bool ignore_validity_check = false;
@@ -111,11 +113,11 @@ TYPED_TEST(BalBundleAdjustmentHelperTest, LinearizePoint) {
   }
 
   {
-    Vec3 x0 = Vec3::Zero();
+    Vec4 x0 = Vec4::Zero();
     test_jacobian(
         "d_res_d_i", d_res_d_i,
-        [&](const Vec3& x) {
-          basalt::BalCamera<Scalar> intr_new = intr;
+        [&](const Vec4& x) {
+          basalt::PinholeCamera<Scalar> intr_new = intr;
           intr_new += x;
 
           Vec2 res;

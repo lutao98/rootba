@@ -69,7 +69,7 @@ class LinearizorQR : public LinearizorBase<Scalar_> {
   using Base::options_;
   using Base::summary_;
 
-  std::unique_ptr<LinearizationQR<Scalar, 9>> lqr_;
+  std::unique_ptr<LinearizationQR<Scalar, 10>> lqr_;
 
   // set during linearization, used in solve
   VecX pose_jacobian_scaling_;

@@ -69,7 +69,7 @@ class LinearizorSC : public LinearizorBase<Scalar_> {
   using Base::options_;
   using Base::summary_;
 
-  std::unique_ptr<LinearizationSC<Scalar, 9>> lsc_;
+  std::unique_ptr<LinearizationSC<Scalar, 10>> lsc_;
 
   // set during linearization, used in solve
   VecX pose_jacobian_scaling_;

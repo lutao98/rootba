@@ -155,7 +155,8 @@ class LandmarkBlockSC {
         const Scalar sqrt_weight = std::sqrt(weight);
 
         storage_.template block<2, 6>(obs_idx, pose_idx) = sqrt_weight * Jp;
-        storage_.template block<2, 3>(obs_idx, pose_idx + 6) = sqrt_weight * Ji;
+        // fx,fy,cx,cy
+        storage_.template block<2, 4>(obs_idx, pose_idx + 6) = sqrt_weight * Ji;
         storage_.template block<2, 3>(obs_idx, lm_idx_) = sqrt_weight * Jl;
         storage_.template block<2, 1>(obs_idx, res_idx_) = sqrt_weight * res;
       }
