@@ -44,6 +44,7 @@ class LandmarkBlockStatic
     : public LandmarkBlockBase<LandmarkBlockStatic<Scalar, POSE_SIZE, NUM_OBS>,
                                Scalar, POSE_SIZE> {
  public:
+  // obs default 2 dimension
   constexpr static size_t NUM_ROWS =
       NUM_OBS * 2 + 3;  // residuals and lm damping
 
