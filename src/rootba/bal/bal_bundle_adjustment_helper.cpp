@@ -142,6 +142,7 @@ bool BalBundleAdjustmentHelper<Scalar>::linearize_point(
       *d_res_d_xi = d_res_d_p * d_point_d_xi;
     }else{
       d_res_d_xi->setZero();
+      if(d_res_d_i) d_res_d_i->setZero();
     }
   }
 

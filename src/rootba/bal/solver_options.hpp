@@ -84,7 +84,7 @@ struct SolverOptions : public VisitableOptions<SolverOptions> {
 
   // solver type
   VISITABLE_META(SolverType, solver_type,
-                 init(SolverType::SQUARE_ROOT)
+                 init(SolverType::SCHUR_COMPLEMENT)
                      .help("Solver type; 'SQUARE_ROOT' for square root BA, "
                            "'SCHUR_COMPLEMENT' for classical Schur complement "
                            "BA, 'CERES' for a Ceres-based implementation."));
@@ -120,7 +120,7 @@ struct SolverOptions : public VisitableOptions<SolverOptions> {
   // optimized cost in lm (for ceres we can only do Error and ErrorValid)
   VISITABLE_META(
       OptimizedCost, optimized_cost,
-      init(OptimizedCost::ERROR)
+      init(OptimizedCost::ERROR_VALID)
           .help("Which cost to consider for the 'cost decreased?' check in "
                 "Levenberg-Marqardt. ERROR considers all residuals, "
                 "ERROR_VALID ignores residuals with negative z, and "
