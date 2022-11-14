@@ -238,11 +238,11 @@ void BalProblem<Scalar>::load_bal(const std::string& path) {
       // we don't have the "minus" like in the original Snavely model.
 
       // invert y axis
-      obs->second.pos.y() = -obs->second.pos.y();
+      // obs->second.pos.y() = -obs->second.pos.y();
     }
 
     // invert y and z axis (same as rotation around x by 180; self-inverse)
-    const SO3 axis_inversion = SO3(Vec3(1, -1, -1).asDiagonal());
+    // const SO3 axis_inversion = SO3(Vec3(1, -1, -1).asDiagonal());
 
     // parse camera parameters
     for (int i = 0; i < num_cams; ++i) {
@@ -252,9 +252,11 @@ void BalProblem<Scalar>::load_bal(const std::string& path) {
       params = paramsd.cast<Scalar>();
 
       auto& cam = cameras_.at(i);
-      cam.T_c_w.so3() = axis_inversion * SO3::exp(params.template head<3>());
-      cam.T_c_w.translation() = axis_inversion * params.template segment<3>(3);
+      cam.T_c_w.so3() = SO3::exp(params.template head<3>());
+      cam.T_c_w.translation() = params.template segment<3>(3);
       cam.intrinsics = CameraModel(params.template tail<3>());
+      Eigen::Vector4d intrinsics(718.856, 718.856, 607.1928, 185.2157);
+      cam.intrinsics.setPinholeIntrinsic(intrinsics.cast<Scalar>());
     }
 
     // parse landmark parameters
